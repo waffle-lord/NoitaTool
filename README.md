@@ -1,3 +1,3 @@
 # NoitaTool
 
-A console app remake of the NoitaTool made by HootzMcToke.
+A console app remake of the NoitaTool made by HootzMcToke for managing game saves.
