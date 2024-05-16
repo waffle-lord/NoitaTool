@@ -1,16 +1,20 @@
 <script>
-    import { scale } from 'svelte/transition';
-    import {Backup_save} from '../wailsjs/go/main/App.js';
+    import {BackupSave, GetBackups} from '../wailsjs/go/main/App.js';
+    import BackupInfo from './Components/BackupInfo.svelte';
   
   let buttonText = "Backup";
   let newName = "";
-  let names = ["my game backup","big run!","slugma ligma"];
+  let backups;
 
   async function backup() {
     buttonText = "backing up save ...";
-    buttonText = await Backup_save(newName);
-    names = [...names, newName];
+    buttonText = await BackupSave(newName);
+    await getBackups()
     newName = "";
+  }
+
+  async function getBackups() {
+    backups = await GetBackups();
   }
 </script>
 
@@ -22,11 +26,13 @@
   </div>
 
   <div class="list">
-    {#each names as name}
-    <div class="card" transition:scale={{start: .9, duration: 200}}>
-      <p>{name}</p>
-    </div>
+    {#await getBackups() then}
+    {#each backups as backup}
+      <BackupInfo name={backup.Name}/>
+    {:else}
+      <p>no backups found</p>
     {/each}
+    {/await}
   </div>
 
 </main>
@@ -47,12 +53,6 @@
     margin: 10px;
     flex-flow: column;
     overflow: auto;
-  }
-
-  .card {
-    margin-bottom: 10px;
-    border-radius: 10px;
-    background-color: #111111;
   }
 
 </style>
