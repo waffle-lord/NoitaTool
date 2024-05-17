@@ -8,7 +8,7 @@ type BackupInfo struct {
 
 func NewBackupInfo(name string, path string) *BackupInfo {
 
-	player, err := LoadPlayerData(path + "\\player.xml")
+	player, err := LoadPlayerData(path)
 
 	if err != nil {
 		println("Error while loading player data")
