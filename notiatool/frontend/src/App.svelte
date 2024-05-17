@@ -28,7 +28,7 @@
   <div class="list">
     {#await getBackups() then}
     {#each backups as backup}
-      <BackupInfo name={backup.Name}/>
+      <BackupInfo backup={backup}/>
     {:else}
       <p>no backups found</p>
     {/each}
@@ -43,9 +43,9 @@
   .inputs {
     position: sticky;
     top: 0;
-    background-color: #1b2635;
+    background-color: #1f3049;
     padding: 10px;
-    box-shadow: 0px 4px 5px #111111;
+    box-shadow: 0px 2px 3px #111111;
   }
 
   .list {
