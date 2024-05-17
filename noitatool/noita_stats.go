@@ -6,21 +6,21 @@ import (
 	"strings"
 )
 
-type NotiaStats struct {
+type NoitaStats struct {
 	Health       uint8
 	Gold         uint64
 	Kills        uint64
 	CurrentBiome string
 }
 
-func LoadStats(backupPath string) *NotiaStats {
+func LoadStats(backupPath string) *NoitaStats {
 
 	file, err := os.Open(backupPath + "\\player.xml")
 
 	if err != nil {
 		println(err.Error())
 
-		return &NotiaStats{
+		return &NoitaStats{
 			Health:       0,
 			Gold:         0,
 			Kills:        0,
@@ -56,7 +56,7 @@ func LoadStats(backupPath string) *NotiaStats {
 		}
 	}
 
-	return &NotiaStats{
+	return &NoitaStats{
 		Health:       1,
 		Gold:         1,
 		Kills:        1,

@@ -3,7 +3,7 @@ package main
 type BackupInfo struct {
 	Name  string
 	Path  string
-	Stats *NotiaStats
+	Stats *NoitaStats
 }
 
 func NewBackupInfo(name string, path string) *BackupInfo {
