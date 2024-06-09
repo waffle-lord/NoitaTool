@@ -1,7 +1,10 @@
 <script>
     import {scale} from 'svelte/transition';
+    import {RestoreSave} from '../../wailsjs/go/main/App.js';
+    import ConfirmDialog from './ConfirmDialog.svelte';
 
     export let backup;
+    let showDialog = false;
 
     function getHealthInfo() {
       let hp = Math.floor(backup.Player.Health.CurrentHp * 25);
@@ -20,10 +23,31 @@
       return `${kills} kills`;
     }
 
+    function restoreBackup() {
+
+    }
+
+
 </script>
 
+<ConfirmDialog bind:showDialog>
+  <h2 slot="header">
+		Confirm Backup Restore
+	</h2>
+
+	<p>Restoring a backup will delete your current save data</p>
+  <p>Restore backup?: {backup.Name}</p>
+</ConfirmDialog>
+
 <div class="card" transition:scale={{start: .9, duration: 200}}>
-  <p style="font-size: 22px;">{backup.Name}</p>
+  <div class="title_row">
+    <div class="title">
+      <p>{backup.Name}</p>
+    </div>
+    <div class="restore_button">
+      <button on:click={() => showDialog = true}>Restore Backup</button>
+    </div>
+  </div>
 
   <div class="icons">
     <div class="icon_info">
@@ -54,11 +78,22 @@
 </div>
 
 <style>
-
-  p {
+  .title {
     user-select: none;
-    margin: 5px;
-    margin-bottom: 8px;
+    margin: 0px;
+    margin-left: 20px;
+    font-size: 22px;
+  }
+
+  .restore_button {
+    margin: 0px;
+    margin-right: 20px;
+  }
+
+  .title_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .icons {
