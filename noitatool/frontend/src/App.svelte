@@ -22,13 +22,13 @@
 
   <div class="inputs">
     <input type="text" bind:value={newName}/>
-    <button on:click={backup}>{buttonText}</button>
+    <button class="button-main backup-button" on:click={backup}>{buttonText}</button>
   </div>
 
   <div class="list">
     {#await getBackups() then}
     {#each backups as backup}
-      <BackupInfo backup={backup}/>
+      <BackupInfo backup={backup} on:deleted={getBackups}/>
     {:else}
       <p>no backups found</p>
     {/each}
@@ -39,6 +39,12 @@
 
 
 <style>
+
+  @import "./assets/Styles/ButtonStyles.css";
+
+  .backup-button {
+    height: 20px;
+  }
 
   .inputs {
     position: sticky;

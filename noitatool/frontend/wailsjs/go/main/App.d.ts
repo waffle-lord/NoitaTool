@@ -4,6 +4,8 @@ import {main} from '../models';
 
 export function BackupSave(arg1:string):Promise<string>;
 
+export function DeleteSave(arg1:string):Promise<boolean>;
+
 export function GetBackups():Promise<Array<main.BackupInfo>>;
 
 export function RestoreSave(arg1:string):Promise<void>;

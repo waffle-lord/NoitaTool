@@ -6,6 +6,10 @@ export function BackupSave(arg1) {
   return window['go']['main']['App']['BackupSave'](arg1);
 }
 
+export function DeleteSave(arg1) {
+  return window['go']['main']['App']['DeleteSave'](arg1);
+}
+
 export function GetBackups() {
   return window['go']['main']['App']['GetBackups']();
 }
