@@ -18,7 +18,6 @@
 	async function cancelModal() {
 		showModal = false;
 		if (dialog) {
-			await delay(500);
 			dialog.close();
 			dispatch('cancel');
 		}
@@ -27,7 +26,6 @@
 	async function closeModal() {
 		showModal = false;
 		if (dialog) {
-			await delay(500);
 			dialog.close();
 			dispatch('confirm');
 		}

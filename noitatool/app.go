@@ -41,26 +41,7 @@ func NewApp() *App {
 	main_save := game_path + "\\save00"
 	backup_path := exDir + "\\notia_backups"
 
-	entries, err := os.ReadDir(backup_path)
-
-	if err != nil {
-		println("Failed to get backups")
-	}
-
-	println("::dir contents::")
-
-	foundBackups := []BackupInfo{}
-
-	for _, e := range entries {
-
-		if !e.IsDir() {
-			continue
-		}
-
-		println(e.Name())
-
-		foundBackups = append(foundBackups, *NewBackupInfo(e.Name(), backup_path+"\\"+e.Name()))
-	}
+	foundBackups := loadBackups(backup_path)
 
 	return &App{
 		noita_game_path:      game_path,
@@ -74,6 +55,31 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+}
+
+func loadBackups(backup_path string) []BackupInfo {
+	entries, err := os.ReadDir(backup_path)
+	foundBackups := []BackupInfo{}
+
+	if err != nil {
+		println("Failed to get backups")
+		return foundBackups
+	}
+
+	println("::dir contents::")
+
+	for _, e := range entries {
+
+		if !e.IsDir() {
+			continue
+		}
+
+		println(e.Name())
+
+		foundBackups = append(foundBackups, *NewBackupInfo(e.Name(), backup_path+"\\"+e.Name()))
+	}
+
+	return foundBackups
 }
 
 func (a *App) BackupSave(name string) string {
@@ -97,7 +103,7 @@ func (a *App) BackupSave(name string) string {
 		return "Failed to backup save"
 	}
 
-	a.backups = append(a.backups, *NewBackupInfo(name, destination))
+	a.backups = loadBackups(a.backup_folder_path)
 
 	return fmt.Sprintf("backup complete: %s", name)
 }

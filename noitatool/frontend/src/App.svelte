@@ -1,4 +1,6 @@
 <script>
+    import {flip} from 'svelte/animate';
+    import {scale} from 'svelte/transition';
     import {BackupSave, GetBackups} from '../wailsjs/go/main/App.js';
     import BackupInfo from './Components/BackupInfo.svelte';
   
@@ -8,7 +10,8 @@
 
   async function backup() {
     buttonText = "backing up save ...";
-    buttonText = await BackupSave(newName);
+    await BackupSave(newName);
+    buttonText = "Backup"
     await getBackups()
     newName = "";
   }
@@ -27,8 +30,10 @@
 
   <div class="list">
     {#await getBackups() then}
-    {#each backups as backup}
+    {#each backups as backup (backup.Name)}
+    <div class="card" transition:scale={{start: .9, duration: 200}} animate:flip={{duration: 200}}>
       <BackupInfo backup={backup} on:deleted={getBackups}/>
+    </div>
     {:else}
       <p>no backups found</p>
     {/each}
@@ -54,11 +59,15 @@
     box-shadow: 0px 2px 3px #111111;
   }
 
+  .card {
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #111111;
+  }
+
   .list {
-    display: flex;
+    height: 90vh;
     margin: 10px;
-    flex-flow: column;
-    overflow: auto;
   }
 
 </style>
