@@ -3,6 +3,8 @@
   import {slide} from 'svelte/transition';
   import { RestoreSave, DeleteSave } from "../../wailsjs/go/main/App.js";
   import ConfirmModal from "./ConfirmModal.svelte";
+  import {addNotification, dismissNotification, updateNotification} from '../store.js';
+
 
   export let backup;
   let showRestoreModal = false;
@@ -28,13 +30,27 @@
     return `${kills} kills`;
   }
 
+  async function restoreSave() {
+    const id = addNotification({type: "info", message: `Restoring '${backup.Name}' ...`});
+    const restored = RestoreSave(backup.Name);
+
+    const type = restored ? "success" : "error";
+    const message = restored ? `Backup Restored '${backup.Name}'` : `Restore failed '${backup.Name}'`;
+
+    updateNotification(id, {type: type, message: message}, true);
+  }
+
   async function deleteSave() {
+    const id = addNotification({type: "info", message: `Deleting '${backup.Name}' ...`});
+
     const removed = await DeleteSave(backup.Name);
 
     if (!removed) {
-      // todo: send notification
+      updateNotification(id, {type: "error", message: `Deletion failed '${backup.Name}'`}, true)
       return;
     }
+
+    updateNotification(id, {type: "success", message: `Deleted '${backup.Name}'`}, true)
 
     dispatch("deleted");
   }
@@ -46,7 +62,7 @@
     confirmText="Restore Backup"
     dialogColor="cornflowerblue"
     message="Restoring a backup will delete your current save data"
-    on:confirm={() => RestoreSave(backup.Name)}
+    on:confirm={restoreSave}
   />
 {/if}
 

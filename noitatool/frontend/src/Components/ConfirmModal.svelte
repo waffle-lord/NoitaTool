@@ -9,7 +9,6 @@
 	export let dialogColor = "orangered";
 
     const dispatch = createEventDispatcher();
-	const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 	let dialog;
 

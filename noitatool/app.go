@@ -82,15 +82,16 @@ func loadBackups(backup_path string) []BackupInfo {
 	return foundBackups
 }
 
-func (a *App) BackupSave(name string) string {
+func (a *App) BackupSave(name string) Result {
+
 	name = strings.TrimSpace(name)
 
 	if len(name) == 0 {
-		return "no name provided"
+		return NewResult(false, "no name provided")
 	}
 
 	if len(name) > 30 {
-		return "30 char limit for name"
+		return NewResult(false, "30 char limit for name")
 	}
 
 	source := a.notia_main_save_path
@@ -100,16 +101,18 @@ func (a *App) BackupSave(name string) string {
 
 	if err != nil {
 		println(err.Error())
-		return "Failed to backup save"
+		return NewResult(false, "Failed to backup save")
 	}
 
 	a.backups = loadBackups(a.backup_folder_path)
 
-	return fmt.Sprintf("backup complete: %s", name)
+	return NewResult(true, fmt.Sprintf("backup complete: %s", name))
 }
 
-func (a *App) RestoreSave(name string) {
-	println("not implemented: ", name)
+func (a *App) RestoreSave(name string) bool {
+	// todo: actually restore stuff
+
+	return true
 }
 
 func (a *App) DeleteSave(name string) bool {

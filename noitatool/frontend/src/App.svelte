@@ -3,16 +3,21 @@
     import {scale} from 'svelte/transition';
     import {BackupSave, GetBackups} from '../wailsjs/go/main/App.js';
     import BackupInfo from './Components/BackupInfo.svelte';
+    import {addNotification, dismissNotification, updateNotification} from './store.js';
+    import NotificationsList from './Components/NotificationsList.svelte';
   
-  let buttonText = "Backup";
   let newName = "";
   let backups;
 
   async function backup() {
-    buttonText = "backing up save ...";
-    await BackupSave(newName);
-    buttonText = "Backup"
-    await getBackups()
+    const id = addNotification({type: "info", message: `Saving '${newName}' ...`});
+
+    const res = await BackupSave(newName);
+
+    updateNotification(id, {type: (res.Success ? "success" : "error"), message: res.Message}, true)
+
+    await getBackups();
+
     newName = "";
   }
 
@@ -23,15 +28,17 @@
 
 <main>
 
+  <NotificationsList />
+
   <div class="inputs">
     <input type="text" bind:value={newName}/>
-    <button class="button-main backup-button" on:click={backup}>{buttonText}</button>
+    <button class="button-main backup-button" on:click={backup}>Backup</button>
   </div>
 
   <div class="list">
     {#await getBackups() then}
     {#each backups as backup (backup.Name)}
-    <div class="card" transition:scale={{start: .9, duration: 200}} animate:flip={{duration: 200}}>
+    <div class="card" transition:scale={{start: .9, duration: 200}} animate:flip={{duration: 300}}>
       <BackupInfo backup={backup} on:deleted={getBackups}/>
     </div>
     {:else}
@@ -63,6 +70,11 @@
     margin-bottom: 10px;
     border-radius: 10px;
     background-color: #111111;
+  }
+
+  .card:hover {
+    background-color: #1a1a1a;
+    box-shadow: 3px 5px 10px black;
   }
 
   .list {
