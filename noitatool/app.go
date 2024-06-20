@@ -109,10 +109,18 @@ func (a *App) BackupSave(name string) Result {
 	return NewResult(true, fmt.Sprintf("backup complete: %s", name))
 }
 
-func (a *App) RestoreSave(name string) bool {
-	// todo: actually restore stuff
+func (a *App) RestoreSave(name string) Result {
+	destination := a.notia_main_save_path
+	source := a.backup_folder_path + "\\" + name
 
-	return true
+	err := cp.Copy(source, destination)
+
+	if err != nil {
+		println(err.Error())
+		return NewResult(false, fmt.Sprintf("Restore Failed: %s", err.Error()))
+	}
+
+	return NewResult(true, fmt.Sprintf("Restore Complete: %s", name))
 }
 
 func (a *App) DeleteSave(name string) bool {

@@ -4,7 +4,7 @@ go 1.21
 
 toolchain go1.22.2
 
-require github.com/wailsapp/wails/v2 v2.8.2
+require github.com/wailsapp/wails/v2 v2.7.1
 
 require golang.org/x/sync v0.3.0 // indirect
 

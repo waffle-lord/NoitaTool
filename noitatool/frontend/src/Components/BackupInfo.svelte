@@ -32,16 +32,15 @@
 
   async function restoreSave() {
     const id = addNotification({type: "info", message: `Restoring '${backup.Name}' ...`});
-    const restored = RestoreSave(backup.Name);
+    const res = await RestoreSave(backup.Name);
 
-    const type = restored ? "success" : "error";
-    const message = restored ? `Backup Restored '${backup.Name}'` : `Restore failed '${backup.Name}'`;
+    const type = res.Success ? "success" : "error";
 
-    updateNotification(id, {type: type, message: message}, true);
+    updateNotification(id, {type: type, message: res.Message}, true);
   }
 
   async function deleteSave() {
-    const id = addNotification({type: "info", message: `Deleting '${backup.Name}' ...`});
+    const id = addNotification({type: "pending", message: `Deleting '${backup.Name}' ...`});
 
     const removed = await DeleteSave(backup.Name);
 

@@ -8,4 +8,4 @@ export function DeleteSave(arg1:string):Promise<boolean>;
 
 export function GetBackups():Promise<Array<main.BackupInfo>>;
 
-export function RestoreSave(arg1:string):Promise<boolean>;
+export function RestoreSave(arg1:string):Promise<main.Result>;

@@ -10,7 +10,7 @@
   let backups;
 
   async function backup() {
-    const id = addNotification({type: "info", message: `Saving '${newName}' ...`});
+    const id = addNotification({type: "pending", message: `Saving '${newName}' ...`});
 
     const res = await BackupSave(newName);
 
@@ -31,8 +31,10 @@
   <NotificationsList />
 
   <div class="inputs">
-    <input type="text" bind:value={newName}/>
-    <button class="button-main backup-button" on:click={backup}>Backup</button>
+    <form on:submit|preventDefault={() => {}}>
+      <input type="text" bind:value={newName}/>
+      <button class="button-main backup-button" on:click={backup}>Backup</button>
+    </form>
   </div>
 
   <div class="list">
